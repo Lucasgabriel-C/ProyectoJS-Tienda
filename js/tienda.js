@@ -47,8 +47,8 @@ function venderProducto(opcion){
 }
 
 function pedirDinero(precioProducto){
-  let dineroIngresado = Number(prompt("¿Con cuanto vas a pagar?"));
-  let cambio = dineroIngresado - precioProducto;
+    let dineroIngresado = Number(prompt("¿Con cuanto vas a pagar?"));
+    let cambio = dineroIngresado - precioProducto;
     while(dineroIngresado < precioProducto){
                 
         if (dineroIngresado>priceProduct){
