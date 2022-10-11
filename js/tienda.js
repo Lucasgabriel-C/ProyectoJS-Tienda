@@ -1,65 +1,194 @@
-alert ("Bienvenidos que fragancia buscas hoy ?")
+class Usuario {
+    constructor(id, nombre, apellido) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
+}
 
-//pedimos los datos
-let nombreCompleto = prompt("Ingresa tu Nombre completo");
-let numeroTelefonico = prompt("ingresa tu numero para ponernos en contacto");
+class Productos {
+    constructor(nombre, precio) {
+        this.nombre = nombre
+        this.precio = precio
+    }
+}
 
-alert ("Bienvendio " + nombreCompleto );
+const textil = new Productos("Textil", 400)
+const aerosol = new Productos("Aerosol", 500);
+const varilla = new Productos("Varilla", 500);
 
-//variables
-let difusorAerosol = 450;
-let difusroTextil = 350;
-let difusorVarilla = 500;
-let opcion = mostrarMenu ();
+const productos = [textil, aerosol, varilla]
+
+let opcionProductos = 0;
+
 let dineroIngresado = 0;
 
-if (opcion !=4){
-    venderProducto(opcion);
-}else{
-    alert("Muchas Gracias Vuelva Pronto!!");
+const usuarios = [];
 
-}
+mostrarMenu();
 
-//funciones
-function mostrarMenu(){
-    return prompt("Selecione una opcion: \n1- Difusor Textil : $450 \n2- Difusor Aerosol : $ 350 \n3- Difusor Varilla : $500"); 
-}
+function mostrarMenu() {
+    let opcion = 0;
 
-function venderProducto(opcion){
-    switch (opcion){
-        case "1":{
-            pedirDinero(difusorTextil)
-            break;
-        }
-        case "2":{
-            pedirDinero(difusorAerosol)
-            break;
-        }
-        case "3":{
-            pedirDinero(difusorVarilla)
-            break;
-        }
-        default:{
-            alert("Opcion invalida")
-            break;
+    while (opcion !== 3) {
+        opcion = Number(prompt(`Seleccione una acción:
+                            1. Comprar productos
+                            2. Ir a Usuarios
+                            3. Salir`));
+        switch (opcion) {
+            case 1:
+                {
+                    mostrarMenuProductos();
+                    break;
+                }
+            case 2:
+                {
+                    mostrarMenuUsuarios();
+                    break;
+                }
+            default: {
+                alert("GRACIAS, HASTA PRONTO");
+                break;
+            }
         }
     }
 }
 
-function pedirDinero(precioProducto){
-    let dineroIngresado = Number(prompt("¿Con cuanto vas a pagar?"));
-    let cambio = dineroIngresado - precioProducto;
-    while(dineroIngresado < precioProducto){
-                
-        if (dineroIngresado>priceProduct){
-            alert("Monto invalido");
+
+
+function mostrarMenuProductos() {
+
+    const opcion = prompt(`Seleccione una opcion: 
+                    1. TEXTIL (${textil.precio}ARS)
+                    2. AEROSOL (${aerosol.precio}ARS)
+                    3. VARILLA (${varilla.precio}ARS)
+                    4. FIN`);
+
+    if (opcion != 4) {
+        venderProducto(opcion);
+    }
+
+    else {
+        alert("GRACIAS");
+    }
+}
+
+
+function pedirDinero(priceProduct) {
+    while (dineroIngresado < priceProduct) {
+        let dinero = Number(prompt("¿Con cuanto va a pagar?"));
+
+        if (dinero < priceProduct) {
+            alert("monto invalido")
         }
-        else{
-          alert("su cambio es: " + cambio);          
+        else {
+            dineroIngresado += dinero;
         }
     }
 
-    
+    let cambio = dineroIngresado - priceProduct;
+    alert("Su cambio es: " + cambio);
+    alert("Gracias");
+}
 
-alert("Gracias, nos pondremos en contacto para cordinar la entrega");
+
+
+function mostrarMenuUsuarios() {
+    let opcion = 0;
+
+    while (opcion !== 6) {
+        opcion = Number(prompt(`Seleccione una acción:
+                        1. Agregar Usuario
+                        2. Eliminar Usuario
+                        3. Modificar Usuario
+                        4. Listar usuarios
+                        5. Buscar Usuario
+                        6. Volver al menú principal`));
+        switch (opcion) {
+            case 1:
+                {
+                    agregarUsuario();
+                    break;
+                }
+            case 2:
+                {
+                    eliminarUsuario();
+                    break;
+                }
+            case 3:
+                {
+                    modificarUsuario();
+                    break;
+                }
+            case 4:
+                {
+                    listarUsuarios();
+                    break;
+                }
+            case 5:
+                {
+                    buscarUsuario();
+                    break;
+                }
+            default:
+                {
+                    mostrarMenu();
+                    break;
+                }
+        }
+    }
+}
+function agregarUsuario() {
+    let id = 1;
+    if (usuarios.length > 0) {
+        id = usuarios[usuarios.length - 1].id + 1;
+    }
+
+    let nombre = prompt("ingrese un nombre");
+    let apellido = prompt("ingrese un apellido");
+    let usuario = new Usuario(id, nombre, apellido);
+    usuarios.push(usuario);
+}
+function eliminarUsuario() {
+    let id = Number(prompt("Ingrese el id del usuario que quiere eliminar"));
+    let encontrado = usuarios.find((usuario) => usuario.id === id);
+    if (!encontrado) {
+        alert("Usuario no Encontrado");
+    }
+    else {
+        let index = usuarios.indexOf(encontrado);
+        usuarios.splice(index, 1);
+        console.log("Borrar usuario");
+        console.log(usuarios);
+    }
+}
+function modificarUsuario() {
+    let id = Number(prompt("Ingrese el id del usuario que quiere modificar"));
+    let existe = usuarios.some((usuario) => usuario.id === id);
+    if (existe) {
+        let encontrado = usuarios.find((usuario) => usuario.id === id);
+        let nuevoNombre = prompt("Ingrese el nuevo nombre");
+        let nuevoApellido = prompt("Ingrese el nuevo apellido");
+        encontrado.nombre = nuevoNombre;
+        encontrado.apellido = nuevoApellido;
+        console.log("MODIFICACION")
+        console.log(usuarios);
+    }
+    else {
+        alert("Usuario no encontrado")
+    }
+}
+function listarUsuarios() {
+    console.log("LISTAR USUARIOS")
+
+    usuarios.forEach(
+        (usuario) => {
+            console.log(usuario.id + " " + usuario.nombre + " " + usuario.apellido);
+        }
+    );
+}
+function buscarUsuario() {
+    let nombre = prompt("Ingresa el nombre que quieres buscar");
+    let encontrados = usuarios.filter((usuario) => usuario.nombre.toLowerCase().indexOf(nombre.toLocaleLowerCase()) !== -1);
+    console.log("BUSCAR USUARIOS:", encontrados);
 }
